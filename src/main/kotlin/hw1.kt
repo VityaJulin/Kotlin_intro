@@ -1,9 +1,7 @@
 fun main() {
     print("Enter your total sale: ")
-    val totalSale = readLine()
-
-    print("Enter your current sale: ")
-    val amount = readLine()
+    val userInput = readLine()
+    val totalSale = tryUserInput(userInput)
 
     print("Exclusive author press 1, else press 2: ")
     val exclusive = when (readLine()) {
@@ -11,16 +9,12 @@ fun main() {
         else -> false
     }
 
-    try {
-        val fee = calculateFee(amount, totalSale, exclusive)
-        println("Your fee is: $fee%")
-    } catch (e: Exception) {
-        print("Incorrect input!")
-    }
+    val fee = calculateFee(totalSale, exclusive)
+    println("Your fee is: $fee%")
 }
 
-fun calculateFee(amount: String?, total: String?, exclusive: Boolean = false): Int {
-    val percent = when (total?.toInt()) {
+fun calculateFee(total: Int?, exclusive: Boolean = false): Int {
+    val percent = when (total) {
         in 0..1000 -> 30
         in 1001..10000 -> 25
         in 10001..50000 -> 20
@@ -31,4 +25,13 @@ fun calculateFee(amount: String?, total: String?, exclusive: Boolean = false): I
         true -> percent - 5
         else -> percent
     }
+}
+
+fun tryUserInput(input: String?): Int? {
+    try {
+        return input?.toInt()
+    } catch (e: Exception) {
+        println("Incorrect input!")
+    }
+    return 0
 }
